@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="100">
+  <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
+    <logicalFolder name="RunCPM" displayName="RunCPM" projectFiles="true">
+      <logicalFolder name="hardware" displayName="hardware" projectFiles="true">
+        <logicalFolder name="esp32" displayName="esp32" projectFiles="true">
+          <itemPath>../RunCPM/hardware/esp32/devkit.h</itemPath>
+          <itemPath>../RunCPM/hardware/esp32/lolin32_pro.h</itemPath>
+          <itemPath>../RunCPM/hardware/esp32/ttgo_t1.h</itemPath>
+        </logicalFolder>
+      </logicalFolder>
+      <itemPath>../RunCPM/abstraction_posix.h</itemPath>
+      <itemPath>../RunCPM/ccp.h</itemPath>
+      <itemPath>../RunCPM/cpu.h</itemPath>
+      <itemPath>../RunCPM/globals.h</itemPath>
+      <itemPath>../RunCPM/machine.h</itemPath>
+      <itemPath>../RunCPM/main.c</itemPath>
+      <itemPath>main.cpp</itemPath>
+      <itemPath>../RunCPM/ram.h</itemPath>
+      <itemPath>../RunCPM/z80.c</itemPath>
+      <itemPath>../RunCPM/z80.h</itemPath>
+    </logicalFolder>
+    <logicalFolder name="TestFiles"
+                   displayName="Файлы тестов"
+                   projectFiles="false"
+                   kind="TEST_LOGICAL_FOLDER">
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Важные файлы"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
+  </logicalFolder>
+  <sourceRootList>
+    <Elem>../RunCPM</Elem>
+  </sourceRootList>
+  <projectmakefile>Makefile</projectmakefile>
+  <confs>
+    <conf name="Debug" type="1">
+      <toolsSet>
+        <compilerSet>default</compilerSet>
+        <dependencyChecking>true</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <compileType>
+        <cTool>
+          <preprocessorList>
+            <Elem>DEBUG</Elem>
+          </preprocessorList>
+          <warningLevel>2</warningLevel>
+        </cTool>
+        <ccTool>
+          <standard>8</standard>
+          <incDir>
+            <pElem>../RunCPM</pElem>
+          </incDir>
+          <preprocessorList>
+            <Elem>DEBUG</Elem>
+          </preprocessorList>
+          <warningLevel>0</warningLevel>
+        </ccTool>
+        <linkerTool>
+          <output>${CND_DISTDIR}/${CND_CONF}/runcpm</output>
+          <linkerLibItems>
+            <linkerLibFileItem>../RunCPM/lua/liblua.a</linkerLibFileItem>
+          </linkerLibItems>
+        </linkerTool>
+      </compileType>
+      <item path="../RunCPM/abstraction_posix.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../RunCPM/ccp.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../RunCPM/cpu.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../RunCPM/globals.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../RunCPM/hardware/esp32/devkit.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../RunCPM/hardware/esp32/lolin32_pro.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../RunCPM/hardware/esp32/ttgo_t1.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../RunCPM/machine.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../RunCPM/ram.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../RunCPM/z80.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../RunCPM/z80.h" ex="false" tool="3" flavor2="0">
+      </item>
+    </conf>
+    <conf name="Release" type="1">
+      <toolsSet>
+        <compilerSet>default</compilerSet>
+        <dependencyChecking>true</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <compileType>
+        <cTool>
+          <developmentMode>5</developmentMode>
+        </cTool>
+        <ccTool>
+          <developmentMode>5</developmentMode>
+          <standard>8</standard>
+        </ccTool>
+        <fortranCompilerTool>
+          <developmentMode>5</developmentMode>
+        </fortranCompilerTool>
+        <asmTool>
+          <developmentMode>5</developmentMode>
+        </asmTool>
+      </compileType>
+      <item path="../RunCPM/abstraction_posix.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../RunCPM/ccp.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../RunCPM/cpu.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../RunCPM/globals.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../RunCPM/hardware/esp32/devkit.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../RunCPM/hardware/esp32/lolin32_pro.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../RunCPM/hardware/esp32/ttgo_t1.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../RunCPM/machine.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../RunCPM/main.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../RunCPM/ram.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../RunCPM/z80.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../RunCPM/z80.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="main.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+    </conf>
+  </confs>
+</configurationDescriptor>

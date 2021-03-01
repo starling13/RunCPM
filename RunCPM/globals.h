@@ -1,6 +1,8 @@
 #ifndef GLOBALS_H
 #define GLOBALS_H
 
+#include <stdint.h>
+
 /* Some definitions needed globally */
 #ifdef __MINGW32__
 #include <ctype.h>
@@ -105,13 +107,6 @@
 #define TRUE 1
 #endif
 
-typedef signed char     int8;
-typedef signed short    int16;
-typedef signed int      int32;
-typedef unsigned char   uint8;
-typedef unsigned short  uint16;
-typedef unsigned int    uint32;
-
 #define LOW_DIGIT(x)     ((x) & 0xf)
 #define HIGH_DIGIT(x)    (((x) >> 4) & 0xf)
 #define LOW_REGISTER(x)  ((x) & 0xff)
@@ -138,7 +133,7 @@ typedef unsigned int    uint32;
 
 /* CP/M memory definitions */
 #define RAM_FAST	// If this is defined, all RAM function calls become direct access (see below)
-					// This saves about 2K on the Arduino code and should bring speed improvements
+			// This saves about 2K on the Arduino code and should bring speed improvements
 
 #define TPASIZE 60	// Can be 60 for CP/M 2.2 compatibility or more, up to 64 for extra memory
 					// Values other than 60 or 64 would require rebuilding the CCP
@@ -147,9 +142,9 @@ typedef unsigned int    uint32;
 #define MEMSIZE 64 * 1024	// RAM(plus ROM) needs to be 64K to avoid compatibility issues
 
 #ifdef RAM_FAST		// Makes all function calls to memory access into direct RAM access (less calls / less code)
-	static uint8 RAM[MEMSIZE];
+	static uint8_t RAM[MEMSIZE];
 	#define _RamSysAddr(a)		&RAM[a]
-	#define _RamRead(a)			RAM[a]
+	#define _RamRead(a)		RAM[a]
 	#define _RamRead16(a)		((RAM[(a & 0xffff) + 1] << 8) | RAM[a & 0xffff])
 	#define _RamWrite(a, v)		RAM[a] = v
 	#define _RamWrite16(a, v)	RAM[a] = (v) & 0xff; RAM[a + 1] = (v) >> 8
@@ -172,27 +167,27 @@ typedef unsigned int    uint32;
 #define tmpFCB  (BDOSpage + 64)		// Address of the temporary FCB
 
 /* Definition of global variables */
-static uint8	filename[17];		// Current filename in host filesystem format
-static uint8	newname[17];		// New filename in host filesystem format
-static uint8	fcbname[13];		// Current filename in CP/M format
-static uint8	pattern[13];		// File matching pattern in CP/M format
-static uint16	dmaAddr = 0x0080;	// Current dmaAddr
-static uint8	oDrive = 0;			// Old selected drive
-static uint8	cDrive = 0;			// Currently selected drive
-static uint8	userCode = 0;		// Current user code
-static uint16	roVector = 0;
-static uint16	loginVector = 0;
-static uint8	allUsers = FALSE;	// true when dr is '?' in BDOS search first
-static uint8	allExtents = FALSE; // true when ex is '?' in BDOS search first
-static uint8	currFindUser = 0;	// user number of current directory in BDOS search first on all user numbers
-static uint8	blockShift;			// disk allocation block shift
-static uint8	blockMask;			// disk allocation block mask
-static uint8	extentMask;			// disk extent mask
-static uint16	firstBlockAfterDir;	// first allocation block after directory
-static uint16	numAllocBlocks;		// # of allocation blocks on disk
-static uint8	extentsPerDirEntry;	// # of logical (16K) extents in a directory entry
+static uint8_t	filename[17];		// Current filename in host filesystem format
+static uint8_t	newname[17];		// New filename in host filesystem format
+static uint8_t	fcbname[13];		// Current filename in CP/M format
+static uint8_t	pattern[13];		// File matching pattern in CP/M format
+static const uint16_t dmaAddr = 0x0080;	// Current dmaAddr
+static uint8_t	oDrive = 0;			// Old selected drive
+static uint8_t	cDrive = 0;			// Currently selected drive
+static uint8_t	userCode = 0;		// Current user code
+static uint16_t	roVector = 0;
+static uint16_t	loginVector = 0;
+static uint8_t	allUsers = FALSE;	// true when dr is '?' in BDOS search first
+static uint8_t	allExtents = FALSE; // true when ex is '?' in BDOS search first
+static uint8_t	currFindUser = 0;	// user number of current directory in BDOS search first on all user numbers
+static uint8_t	blockShift;			// disk allocation block shift
+static uint8_t	blockMask;			// disk allocation block mask
+static uint8_t	extentMask;			// disk extent mask
+static uint16_t	firstBlockAfterDir;	// first allocation block after directory
+static uint16_t	numAllocBlocks;		// # of allocation blocks on disk
+static uint8_t	extentsPerDirEntry;	// # of logical (16K) extents in a directory entry
 #define logicalExtentBytes (16*1024UL)
-static uint16	physicalExtentBytes;	// # bytes described by 1 directory entry
+static uint16_t	physicalExtentBytes;	// # bytes described by 1 directory entry
 
 #define tohex(x)	((x) < 10 ? (x) + 48 : (x) + 87)
 
@@ -210,10 +205,10 @@ extern "C"
 	extern void _Bdos(void);
 	extern void _Bios(void);
 
-	extern void _HostnameToFCB(uint16 fcbaddr, uint8* filename);
-	extern void _HostnameToFCBname(uint8* from, uint8* to);
+	extern void _HostnameToFCB(uint16_t fcbaddr, uint8_t* filename);
+	extern void _HostnameToFCBname(uint8_t* from, uint8_t* to);
 	extern void _mockupDirEntry(void);
-	extern uint8 match(uint8* fcbname, uint8* pattern);
+	extern uint8_t match(uint8_t* fcbname, uint8_t* pattern);
 
 	extern void _puts(const char* str);
 

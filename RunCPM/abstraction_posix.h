@@ -26,7 +26,7 @@ lua_State* L;
 #define HostOS 0x02
 
 /* Externals for abstracted functions need to go here */
-FILE* _sys_fopen_r(uint8* filename);
+FILE* _sys_fopen_r(uint8_t* filename);
 int _sys_fseek(FILE* file, long delta, int origin);
 long _sys_ftell(FILE* file);
 long _sys_fread(void* buffer, long size, long count, FILE* file);
@@ -35,7 +35,7 @@ int _sys_fclose(FILE* file);
 
 /* Memory abstraction functions */
 /*===============================================================================*/
-void _RamLoad(uint8* filename, uint16 address) {
+void _RamLoad(uint8_t* filename, uint16_t address) {
 	long l;
 	FILE* file = _sys_fopen_r(filename);
 	_sys_fseek(file, 0, SEEK_END);
@@ -52,39 +52,39 @@ void _RamLoad(uint8* filename, uint16 address) {
 #define FOLDERCHAR '/'
 
 typedef struct {
-	uint8 dr;
-	uint8 fn[8];
-	uint8 tp[3];
-	uint8 ex, s1, s2, rc;
-	uint8 al[16];
-	uint8 cr, r0, r1, r2;
+	uint8_t dr;
+	uint8_t fn[8];
+	uint8_t tp[3];
+	uint8_t ex, s1, s2, rc;
+	uint8_t al[16];
+	uint8_t cr, r0, r1, r2;
 } CPM_FCB;
 
 typedef struct {
-	uint8 dr;
-	uint8 fn[8];
-	uint8 tp[3];
-	uint8 ex, s1, s2, rc;
-	uint8 al[16];
+	uint8_t dr;
+	uint8_t fn[8];
+	uint8_t tp[3];
+	uint8_t ex, s1, s2, rc;
+	uint8_t al[16];
 } CPM_DIRENTRY;
 
-uint8 _sys_exists(uint8* filename) {
+uint8_t _sys_exists(uint8_t* filename) {
 	return(!access((const char*)filename, F_OK));
 }
 
-FILE* _sys_fopen_r(uint8* filename) {
+FILE* _sys_fopen_r(uint8_t* filename) {
 	return(fopen((const char*)filename, "rb"));
 }
 
-FILE* _sys_fopen_w(uint8* filename) {
+FILE* _sys_fopen_w(uint8_t* filename) {
 	return(fopen((const char*)filename, "wb"));
 }
 
-FILE* _sys_fopen_rw(uint8* filename) {
+FILE* _sys_fopen_rw(uint8_t* filename) {
 	return(fopen((const char*)filename, "r+b"));
 }
 
-FILE* _sys_fopen_a(uint8* filename) {
+FILE* _sys_fopen_a(uint8_t* filename) {
 	return(fopen((const char*)filename, "a"));
 }
 
@@ -120,20 +120,20 @@ int _sys_fclose(FILE* file) {
 	return(fclose(file));
 }
 
-int _sys_remove(uint8* filename) {
+int _sys_remove(uint8_t* filename) {
 	return(remove((const char*)filename));
 }
 
-int _sys_rename(uint8* name1, uint8* name2) {
+int _sys_rename(uint8_t* name1, uint8_t* name2) {
 	return(rename((const char*)name1, (const char*)name2));
 }
 
-int _sys_select(uint8* disk) {
+int _sys_select(uint8_t* disk) {
 	struct stat st;
 	return((stat((char*)disk, &st) == 0) && ((st.st_mode & S_IFDIR) != 0));
 }
 
-long _sys_filesize(uint8* filename) {
+long _sys_filesize(uint8_t* filename) {
 	long l = -1;
 	FILE* file = _sys_fopen_r(filename);
 	if (file != NULL) {
@@ -144,25 +144,25 @@ long _sys_filesize(uint8* filename) {
 	return(l);
 }
 
-int _sys_openfile(uint8* filename) {
+int _sys_openfile(uint8_t* filename) {
 	FILE* file = _sys_fopen_r(filename);
 	if (file != NULL)
 		_sys_fclose(file);
 	return(file != NULL);
 }
 
-int _sys_makefile(uint8* filename) {
+int _sys_makefile(uint8_t* filename) {
 	FILE* file = _sys_fopen_a(filename);
 	if (file != NULL)
 		_sys_fclose(file);
 	return(file != NULL);
 }
 
-int _sys_deletefile(uint8* filename) {
+int _sys_deletefile(uint8_t* filename) {
 	return(!_sys_remove(filename));
 }
 
-int _sys_renamefile(uint8* filename, uint8* newname) {
+int _sys_renamefile(uint8_t* filename, uint8_t* newname) {
 	return(!_sys_rename(&filename[0], &newname[0]));
 }
 
@@ -182,18 +182,18 @@ void _sys_logbuffer(uint8* buffer) {
 }
 #endif
 
-uint8 _sys_readseq(uint8* filename, long fpos) {
-	uint8 result = 0xff;
-	uint8 bytesread;
-	uint8 dmabuf[128];
-	uint8 i;
+uint8_t _sys_readseq(uint8_t* filename, long fpos) {
+	uint8_t result = 0xff;
+	uint8_t bytesread;
+	uint8_t dmabuf[128];
+	uint8_t i;
 
 	FILE* file = _sys_fopen_r(&filename[0]);
 	if (file != NULL) {
 		if (!_sys_fseek(file, fpos, 0)) {
 			for (i = 0; i < 128; ++i)
 				dmabuf[i] = 0x1a;
-			bytesread = (uint8)_sys_fread(&dmabuf[0], 1, 128, file);
+			bytesread = (uint8_t)_sys_fread(&dmabuf[0], 1, 128, file);
 			if (bytesread) {
 				for (i = 0; i < 128; ++i)
 					_RamWrite(dmaAddr + i, dmabuf[i]);
@@ -210,8 +210,8 @@ uint8 _sys_readseq(uint8* filename, long fpos) {
 	return(result);
 }
 
-uint8 _sys_writeseq(uint8* filename, long fpos) {
-	uint8 result = 0xff;
+uint8_t _sys_writeseq(uint8_t* filename, long fpos) {
+	uint8_t result = 0xff;
 
 	FILE* file = _sys_fopen_rw(&filename[0]);
 	if (file != NULL) {
@@ -229,11 +229,11 @@ uint8 _sys_writeseq(uint8* filename, long fpos) {
 	return(result);
 }
 
-uint8 _sys_readrand(uint8* filename, long fpos) {
-	uint8 result = 0xff;
-	uint8 bytesread;
-	uint8 dmabuf[128];
-	uint8 i;
+uint8_t _sys_readrand(uint8_t* filename, long fpos) {
+	uint8_t result = 0xff;
+	uint8_t bytesread;
+	uint8_t dmabuf[128];
+	uint8_t i;
 	long extSize;
 
 	FILE* file = _sys_fopen_r(&filename[0]);
@@ -241,7 +241,7 @@ uint8 _sys_readrand(uint8* filename, long fpos) {
 		if (!_sys_fseek(file, fpos, 0)) {
 			for (i = 0; i < 128; ++i)
 				dmabuf[i] = 0x1a;
-			bytesread = (uint8)_sys_fread(&dmabuf[0], 1, 128, file);
+			bytesread = (uint8_t)_sys_fread(&dmabuf[0], 1, 128, file);
 			if (bytesread) {
 				for (i = 0; i < 128; ++i)
 					_RamWrite(dmaAddr + i, dmabuf[i]);
@@ -269,8 +269,8 @@ uint8 _sys_readrand(uint8* filename, long fpos) {
 	return(result);
 }
 
-uint8 _sys_writerand(uint8* filename, long fpos) {
-	uint8 result = 0xff;
+uint8_t _sys_writerand(uint8_t* filename, long fpos) {
+	uint8_t result = 0xff;
 
 	FILE* file = _sys_fopen_rw(&filename[0]);
 	if (file != NULL) {
@@ -288,33 +288,33 @@ uint8 _sys_writerand(uint8* filename, long fpos) {
 	return(result);
 }
 
-uint8 _Truncate(char* fn, uint8 rc) {
-	uint8 result = 0x00;
+uint8_t _Truncate(char* fn, uint8_t rc) {
+	uint8_t result = 0x00;
 	if (truncate(fn, rc * 128))
 		result = 0xff;
 	return(result);
 }
-
+/*
 void _MakeUserDir() {
-	uint8 dFolder = cDrive + 'A';
-	uint8 uFolder = toupper(tohex(userCode));
+	uint8_t dFolder = cDrive + 'A';
+	uint8_t uFolder = toupper(tohex(userCode));
 
-	uint8 path[4] = { dFolder, FOLDERCHAR, uFolder, 0 };
+	uint8_t path[4] = { dFolder, FOLDERCHAR, uFolder, 0 };
 
 	mkdir((char*)path, S_IRUSR | S_IWUSR | S_IXUSR);
 }
-
-uint8 _sys_makedisk(uint8 drive) {
-	uint8 result = 0;
+*/
+uint8_t _sys_makedisk(uint8_t drive) {
+	uint8_t result = 0;
 	if (drive < 1 || drive>16) {
 		result = 0xff;
 	} else {
-		uint8 dFolder = drive + '@';
-		uint8 disk[2] = { dFolder, 0 };
+		uint8_t dFolder = drive + '@';
+		uint8_t disk[2] = { dFolder, 0 };
 		if (!mkdir((char*)disk, S_IRUSR | S_IWUSR | S_IXUSR)) {
 			result = 0xfe;
 		} else {
-			uint8 path[4] = { dFolder, FOLDERCHAR, '0', 0 };
+			uint8_t path[4] = { dFolder, FOLDERCHAR, '0', 0 };
 			mkdir((char*)path, S_IRUSR | S_IWUSR | S_IXUSR);
 		}
 	}
@@ -363,17 +363,17 @@ glob_t	pglob;
 int	dirPos;
 
 static char findNextDirName[17];
-static uint16 fileRecords = 0;
-static uint16 fileExtents = 0;
-static uint16 fileExtentsUsed = 0;
-static uint16 firstFreeAllocBlock;
+static uint16_t fileRecords = 0;
+static uint16_t fileExtents = 0;
+static uint16_t fileExtentsUsed = 0;
+static uint16_t firstFreeAllocBlock;
 
-uint8 _findnext(uint8 isdir) {
-	uint8 result = 0xff;
+uint8_t _findnext(uint8_t isdir) {
+	uint8_t result = 0xff;
 	char dir[6] = { '?', FOLDERCHAR, 0, FOLDERCHAR, '*', 0 };
 	int i;
 	struct stat st;
-	uint32 bytes;
+	uint32_t bytes;
 
 	if (allExtents && fileRecords) {
 		// _SearchFirst was called with '?' in the FCB's EX field, so
@@ -397,14 +397,14 @@ uint8 _findnext(uint8 isdir) {
 				++dirPos;
 				strncpy(findNextDirName, pglob.gl_pathv[i], sizeof(findNextDirName) - 1);
 				findNextDirName[sizeof(findNextDirName) - 1] = 0;
-				_HostnameToFCBname((uint8*)findNextDirName, fcbname);
+				_HostnameToFCBname((uint8_t*)findNextDirName, fcbname);
 				if (match(fcbname, pattern) &&
 					(stat(findNextDirName, &st) == 0) &&
 					((st.st_mode & S_IFREG) != 0) &&
-					isxdigit((uint8)findNextDirName[2]) &&
-					(isupper((uint8)findNextDirName[2]) || isdigit((uint8)findNextDirName[2]))) {
+					isxdigit((uint8_t)findNextDirName[2]) &&
+					(isupper((uint8_t)findNextDirName[2]) || isdigit((uint8_t)findNextDirName[2]))) {
 					if (allUsers)
-						currFindUser = isdigit((uint8)findNextDirName[2]) ? findNextDirName[2] - '0' : findNextDirName[2] - 'A' + 10;
+						currFindUser = isdigit((uint8_t)findNextDirName[2]) ? findNextDirName[2] - '0' : findNextDirName[2] - 'A' + 10;
 					if (isdir) {
 						// account for host files that aren't multiples of the block size
 						// by rounding their bytes up to the next multiple of blocks
@@ -429,7 +429,7 @@ uint8 _findnext(uint8 isdir) {
 						firstFreeAllocBlock = firstBlockAfterDir;
 					}
 					_RamWrite(tmpFCB, filename[0] - '@');
-					_HostnameToFCB(tmpFCB, (uint8*)findNextDirName);
+					_HostnameToFCB(tmpFCB, (uint8_t*)findNextDirName);
 					result = 0x00;
 					break;
 				}
@@ -440,7 +440,7 @@ uint8 _findnext(uint8 isdir) {
 	return(result);
 }
 
-uint8 _findfirst(uint8 isdir) {
+uint8_t _findfirst(uint8_t isdir) {
 	dirPos = 0;	// Set directory search to start from the first position
 	_HostnameToFCBname(filename, pattern);
 	fileRecords = 0;
@@ -449,11 +449,11 @@ uint8 _findfirst(uint8 isdir) {
 	return(_findnext(isdir));
 }
 
-uint8 _findnextallusers(uint8 isdir) {
+uint8_t _findnextallusers(uint8_t isdir) {
 	return _findnext(isdir);
 }
 
-uint8 _findfirstallusers(uint8 isdir) {
+uint8_t _findfirstallusers(uint8_t isdir) {
 	dirPos = 0;
 	strcpy((char*)pattern, "???????????");
 	fileRecords = 0;
@@ -500,16 +500,16 @@ int _kbhit(void) {
 	return (poll(pfds, 1, 0) == 1) && (pfds[0].revents & (POLLIN | POLLPRI | POLLRDBAND | POLLRDNORM));
 }
 
-uint8 _getch(void) {
+uint8_t _getch(void) {
 	return getchar();
 }
 
-void _putch(uint8 ch) {
+void _putch(uint8_t ch) {
 	putchar(ch);
 }
 
-uint8 _getche(void) {
-	uint8 ch = _getch();
+uint8_t _getche(void) {
+	uint8_t ch = _getch();
 
 	_putch(ch);
 
@@ -517,7 +517,7 @@ uint8 _getche(void) {
 }
 
 void _clrscr(void) {
-	uint8 ch = system("clear");
+	uint8_t ch = system("clear");
 }
 
 #endif
